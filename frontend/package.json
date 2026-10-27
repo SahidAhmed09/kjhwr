@@ -1,0 +1,27 @@
+{
+  "name": "wind-decision-frontend",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "preview": "vite preview",
+    "build:public": "npm run build && node scripts/copy-to-public.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/libre-franklin": "^5.3.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^4.7.0",
+    "typescript": "~5.7",
+    "vite": "^6.4.5",
+    "vitest": "^3.2.7"
+  }
+}

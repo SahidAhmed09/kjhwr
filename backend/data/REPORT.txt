@@ -1,0 +1,25 @@
+DATA REPORT
+fetched_at (UTC): 2026-10-25T14:59:13Z   base: https://data.elexon.co.uk/bmrs/api/v1
+window: publishTime [2026-01-01T00:00:00Z, 2026-02-01T00:00:00Z)  settlementDate 2026-01-02..2026-02-01 inclusive
+
+ACTUALS (FUELHH WIND): 1488 rows after de-duplication
+  identical duplicates dropped: 0; conflicting duplicates: 0 (any conflict aborts the build)
+  null generation: 0; negative generation: 0; min/max MW: 1695/17805
+  settlement days expected: 31; days with != 48 half-hours: 0
+  settlement periods outside 1..50: 0
+
+FORECASTS (WINDFOR): 18104 rows after de-duplication
+  identical duplicates dropped: 0; conflicting duplicates: 0
+  null generation: 0; negative generation: 0; min/max MW: 2250/21353
+  distinct publish times: 248  (2026-01-01T02:30:00Z .. 2026-01-31T22:30:00Z)
+  publish time-of-day (UTC) counts: 02:30x31, 04:30x31, 07:30x31, 09:30x31, 11:30x30, 12:25x1, 15:30x31, 18:30x31, 22:30x31
+  gaps between consecutive publishes (hours): 2.0x92, 2.92x1, 3.0x62, 3.08x1, 4.0x91
+  publishes per UTC day: {8: 31}; days != 8: none
+  rows per publish: {73: 248}
+  horizon (startTime - publishTime) hours: min -25.5, max 66.5; negative-horizon rows: 3721
+  forecast startTime minute-of-hour: {'00': 793}
+
+COVERAGE CHECK
+  forecast target hours: 793; of which both half-hour actuals present: 744
+
+snapshot sha256: 20580c46a3212708632d27702e039c42a390afedf3bb15df3d52f43c463e2a6b

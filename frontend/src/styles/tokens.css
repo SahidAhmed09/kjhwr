@@ -1,0 +1,76 @@
+/* Design tokens. Light is the default; dark has its own steps (validated against the dark sheet), not an inversion.
+   Red and blue are reserved for the sign of the forecast error: red = over-forecast (the costly side). */
+
+:root {
+  color-scheme: light;
+
+  --page: #ece4d8;
+  --sheet: #fbf8f3;
+  --sheet-2: #f3eee5;
+
+  --ink: #1d1c19;
+  --ink-2: #4f4b44;
+  --ink-3: #6b665c;
+  --on-ink: #fbf8f3;
+  --on-ink-soft: rgba(251, 248, 243, 0.72);
+
+  --rule: #d8d0c1;
+  --band: rgba(29, 28, 25, 0.1);
+
+  --over: #e34948;
+  --under: #2a78d6;
+  --neutral-mark: #8d877b;
+  /* the selected day tile is filled with ink, so its bars need steps that read on ink */
+  --over-sel: #e66767;
+  --under-sel: #3987e5;
+
+  --font: 'Libre Franklin Variable', 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme='light'])) {
+    color-scheme: dark;
+
+    --page: #0f0e0c;
+    --sheet: #1b1a17;
+    --sheet-2: #242218;
+
+    --ink: #f0ece3;
+    --ink-2: #c9c3b5;
+    --ink-3: #a39d8f;
+    --on-ink: #1b1a17;
+    --on-ink-soft: rgba(27, 26, 23, 0.72);
+
+    --rule: #38342d;
+    --band: rgba(240, 236, 227, 0.14);
+
+    --over: #e66767;
+    --under: #3987e5;
+    --neutral-mark: #8a8476;
+    --over-sel: #d83a3a;
+    --under-sel: #2a78d6;
+  }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --page: #0f0e0c;
+  --sheet: #1b1a17;
+  --sheet-2: #242218;
+
+  --ink: #f0ece3;
+  --ink-2: #c9c3b5;
+  --ink-3: #a39d8f;
+  --on-ink: #1b1a17;
+  --on-ink-soft: rgba(27, 26, 23, 0.72);
+
+  --rule: #38342d;
+  --band: rgba(240, 236, 227, 0.14);
+
+  --over: #e66767;
+  --under: #3987e5;
+  --neutral-mark: #8a8476;
+  --over-sel: #d83a3a;
+  --under-sel: #2a78d6;
+}

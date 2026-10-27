@@ -1,0 +1,32 @@
+# VCS and editor
+.git
+.gitignore
+.idea
+.vscode
+
+# Dependencies and build output are produced inside the image
+**/node_modules
+frontend/dist
+**/__pycache__
+**/*.pyc
+**/*.tmp
+.venv
+
+# Design tooling, screenshots and scratch files
+.impeccable
+PRODUCT.md
+DESIGN.md
+docs
+
+# Vercel-only files
+public
+app.py
+pyproject.toml
+vercel.json
+.vercelignore
+.python-version
+
+# Docker files themselves
+Dockerfile
+docker-compose.yml
+.dockerignore

@@ -1,0 +1,54 @@
+# docker compose up --build                          the app on http://localhost:8000
+# docker compose --profile test run --rm test-backend
+# docker compose --profile test run --rm test-frontend
+# docker compose --profile tools run --rm snapshot   rebuild the snapshot from the live Elexon API
+#
+# `snapshot` calls the live API and OVERWRITES backend/data/snapshot.json.gz on the host. Elexon may have
+# restated values since the committed snapshot was fetched, so review the diff in REPORT.txt before using it.
+
+name: wind-day-ahead
+
+services:
+  app:
+    build:
+      context: .
+      target: runtime
+    image: wind-day-ahead:latest
+    ports:
+      - "${PORT:-8000}:8000"
+    restart: unless-stopped
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    # healthcheck comes from the image (/api/health, and the snapshot must be present)
+
+  snapshot:
+    profiles: ["tools"]
+    build:
+      context: .
+      target: runtime
+    image: wind-day-ahead:latest
+    # Run as the caller on Linux so the bind-mounted files stay writable: UID=$(id -u) GID=$(id -g) docker compose ...
+    user: "${UID:-10001}:${GID:-10001}"
+    working_dir: /app/backend
+    volumes:
+      - ./backend/data:/app/backend/data
+    entrypoint: ["python", "scripts/fetch_snapshot.py"]
+    # Extra arguments after the service name go straight to the script, for example:
+    #   docker compose --profile tools run --rm snapshot --out /app/backend/data/snapshot.json.gz
+
+  test-backend:
+    profiles: ["test"]
+    build:
+      context: .
+      target: backend-test
+    image: wind-day-ahead:backend-test
+
+  test-frontend:
+    profiles: ["test"]
+    build:
+      context: .
+      target: frontend-test
+    image: wind-day-ahead:frontend-test

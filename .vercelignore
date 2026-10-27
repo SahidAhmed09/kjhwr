@@ -1,0 +1,11 @@
+# Not needed on Vercel; keeps the upload small. public/ (the built front end) and backend/ ARE needed.
+node_modules
+frontend/node_modules
+frontend/dist
+.impeccable
+.git
+**/__pycache__
+**/*.pyc
+Dockerfile
+docker-compose.yml
+.dockerignore

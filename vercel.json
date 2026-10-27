@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "app.py": {
+      "maxDuration": 30,
+      "includeFiles": "backend/data/snapshot.json.gz",
+      "excludeFiles": "{frontend/**,public/**,docs/**,.impeccable/**,backend/tests/**,backend/scripts/**,backend/data/REPORT.txt,backend/data/snapshot.sha256,backend/requirements*.txt,Dockerfile,docker-compose.yml,.dockerignore,.vercelignore,**/__pycache__/**,**/node_modules/**,**/*.md}"
+    }
+  }
+}
