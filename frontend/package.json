@@ -9,6 +9,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "preview": "vite preview",
+    "build:vercel": "tsc --noEmit && vite build --mode vercel",
     "build:public": "npm run build && node scripts/copy-to-public.mjs"
   },
   "dependencies": {

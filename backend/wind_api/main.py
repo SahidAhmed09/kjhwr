@@ -3,6 +3,7 @@
 Environment:
   SNAPSHOT_PATH  snapshot file (default backend/data/snapshot.json.gz)
   STATIC_DIR     built React app; when set, it is served from the same process
+  CORS_ALLOW_ORIGINS  comma-separated origins allowed to call the API from a browser (default *: public, read-only, no cookies)
 """
 from __future__ import annotations
 
@@ -11,6 +12,7 @@ from datetime import date
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Query
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 
 from .models import (AccuracyResponse, DecisionResponse, ErrorResponse, HealthResponse, MetaResponse,
@@ -40,6 +42,10 @@ def create_app(snapshot_path: str | Path | None = None, static_dir: str | Path |
     app = FastAPI(title="UK wind forecast decision support", version=VERSION,
                   description="Wind forecast available at the day-ahead cut-off, and its measured accuracy "
                               "(Elexon FUELHH/WINDFOR, January 2026 snapshot). Error = forecast - actual.")
+    # Every endpoint is a public GET with no login or cookies, so a front end on another domain may read it.
+    origins = [o.strip() for o in os.environ.get("CORS_ALLOW_ORIGINS", "*").split(",") if o.strip()]
+    app.add_middleware(CORSMiddleware, allow_origins=origins, allow_methods=["GET"], allow_headers=["Accept"],
+                       allow_credentials=False)
 
     def guard(fn, *args):
         try:

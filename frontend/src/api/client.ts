@@ -26,10 +26,13 @@ function detailText(body: unknown, status: number): string {
   return `The server answered with status ${status}.`;
 }
 
+/** Empty means same origin (local, Docker, single Vercel project). A separate front end sets VITE_API_BASE at build time. */
+const API_BASE = ((import.meta.env.VITE_API_BASE as string | undefined) ?? '').replace(/\/+$/, '');
+
 export async function getJson<T>(path: string, signal: AbortSignal): Promise<T> {
   let res: Response;
   try {
-    res = await fetch(path, { signal, headers: { Accept: 'application/json' } });
+    res = await fetch(`${API_BASE}${path}`, { signal, headers: { Accept: 'application/json' } });
   } catch (e) {
     if (e instanceof DOMException && e.name === 'AbortError') throw e;
     throw new ApiError(0, 'Cannot reach the server. Check that the back end is running.');

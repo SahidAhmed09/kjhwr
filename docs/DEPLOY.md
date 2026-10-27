@@ -64,6 +64,16 @@ python backend\scripts\compare_deploy.py https://YOUR-PROJECT.vercel.app
 - Front-end change: `cd frontend; npm run build:public`, then `vercel deploy --prod`.
 - Snapshot change: rebuild it (`docker compose --profile tools run --rm snapshot`), review `backend/data/REPORT.txt`, then redeploy.
 
+## Front end on a different Vercel project than the back end
+
+The default is one project: the front end calls `/api` on its own origin. To host the front end apart from the back end:
+
+- The front end reads `VITE_API_BASE` at build time. `frontend/.env.vercel` sets it to the back end's URL (`https://kjhwr-tau-blue.vercel.app`),
+  and `npm run build:vercel` uses it. Plain `npm run build` (local, Docker, `build:public`) does not, so those keep calling their own origin.
+- In the front-end Vercel project set Root Directory `frontend`, Build Command `npm run build:vercel`, Output Directory `dist`.
+- The back end must allow the browser to call it from another origin. It now answers GET requests from any origin (no cookies or credentials), or only from
+  the origins in the `CORS_ALLOW_ORIGINS` environment variable (comma-separated). The deployed back end has to be redeployed once to pick this up.
+
 ## Why the front end is committed
 
 `public/` holds build output and is committed so the Vercel build needs no Node step. Whether Node is available inside a Python
