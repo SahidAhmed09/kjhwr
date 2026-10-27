@@ -11,3 +11,7 @@ dependencies = [
     "pydantic==2.10.4",
     "uvicorn==0.34.0",  # not used by Vercel itself; kept so the pins match backend/requirements.txt exactly
 ]
+
+# Vercel (CLI 65+) no longer finds the app by convention when it is built by a factory; point it at app.py explicitly.
+[tool.vercel]
+entrypoint = "app:app"

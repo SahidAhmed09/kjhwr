@@ -164,5 +164,20 @@ class EntrypointLoadsLikeAServerlessRuntimeTests(unittest.TestCase):
         self.assertEqual(self.client.get("/openapi.json").status_code, 200)
 
 
+class EntrypointTests(unittest.TestCase):
+    """Vercel's FastAPI preset must be told, or be able to see, where the `app` is (a build once failed with FASTAPI_ENTRYPOINT_NOT_FOUND)."""
+
+    def test_pyproject_points_at_the_root_app_file(self):
+        cfg = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
+        module, _, attr = cfg["tool"]["vercel"]["entrypoint"].partition(":")
+        self.assertEqual(attr, "app")
+        self.assertTrue((ROOT / (module.replace(".", "/") + ".py")).is_file())
+
+    def test_the_entrypoint_file_names_a_fastapi_instance_called_app(self):
+        src = (ROOT / "app.py").read_text(encoding="utf-8")
+        self.assertRegex(src, r"(?m)^assert isinstance\(app, FastAPI\)")
+        self.assertIn("from fastapi import FastAPI", src)
+
+
 if __name__ == "__main__":
     unittest.main()
