@@ -1,0 +1,17 @@
+# Vercel reads dependencies and the Python version from here (it detects FastAPI from this file).
+# Keep these pins identical to backend/requirements.txt; backend/tests/test_vercel_ready.py checks that.
+[project]
+name = "wind-day-ahead"
+version = "0.1.0"
+description = "GB wind forecast decision support: API and static front end"
+requires-python = ">=3.12,<3.15"
+dependencies = [
+    "tzdata==2025.2",
+    "fastapi==0.115.6",
+    "pydantic==2.10.4",
+    "uvicorn==0.34.0",  # not used by Vercel itself; kept so the pins match backend/requirements.txt exactly
+]
+
+# Vercel (CLI 65+) no longer finds the app by convention when it is built by a factory; point it at app.py explicitly.
+[tool.vercel]
+entrypoint = "app:app"
